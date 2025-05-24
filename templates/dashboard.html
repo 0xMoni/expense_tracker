@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Hey {{ username }}👋</h2>
+
+<button onclick="window.location.href = '{{ url_for('add_expense') }}';">+ Add New Expense</button>
+<button onclick="window.location.href = '{{ url_for('add_category') }}';">+ Add New Category</button>
+
+<form method="get" style="margin-bottom: 18px;">
+    <label for="start_date">From:</label><br>
+    <input type="date" id="start_date" name="start_date" value="{{ start_date }}"><br>
+    <label for="end_date">To:</label><br>
+    <input type="date" id="end_date" name="end_date" value="{{ end_date }}"><br>
+    <button type="submit">Filter</button>
+    {% if start_date or end_date %}
+        <a href="{{ url_for('dashboard') }}" style="margin-left:10px;">Clear</a>
+    {% endif %}
+</form>
+<a href="{{ url_for('download_csv', start_date=start_date, end_date=end_date) }}" class="button" style="margin-bottom: 18px; display: inline-block;">⬇️ Download CSV</a>
+
+{% for category in categories %}
+    <h3>{{ category.name }} 
+        <a href="{{ url_for('edit_category', category_name=category.name) }}" title="Edit Category" class="icon-link">✏️</a>
+        <a href="{{ url_for('delete_category', category_name=category.name) }}" title="Delete Category" class="icon-link">🗑️</a>
+    </h3>
+    <table border="1">
+        <tr>
+            <th>Date</th>
+            <th>Amount(in Rs)</th>
+            <th>Note</th>
+            <th>Actions</th>
+        </tr>
+        {% for expense in category.expenses %}
+        <tr>
+            <td>{{ expense.date }}</td>
+            <td>{{ expense.amount }}</td>
+            <td>{{ expense.note }}</td>
+            <td class="expense-actions">
+                <a href="{{ url_for('edit_expense', expense_id=expense.id) }}" title="Edit" class="icon-link">✏️</a>
+                <a href="{{ url_for('delete_expense', expense_id=expense.id) }}" title="Delete" class="icon-link">🗑️</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p class="category-total"><strong>Total:</strong> ₹{{ category.total }}</p><br>
+{% endfor %}
+
+<p class="total-all"><strong>Total (all categories):</strong> ₹{{ total_all }}</p><br>
+{% endblock %}

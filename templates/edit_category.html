@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Category{% endblock %}
+
+{% block content %}
+<h2>Edit Category</h2>
+<form method="POST">
+    <label>Current Name:</label><br>
+    <input type="text" name="old_name" value="{{ category_name }}" readonly><br><br>
+    <label>New Name:</label><br>
+    <input type="text" name="new_name" value="{{ category_name }}" required><br><br>
+    <button type="submit">Save</button>
+</form>
+{% endblock %} 

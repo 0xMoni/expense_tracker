@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Add Expense{% endblock %}
+
+{% block content %}
+<h2>Add New Expense</h2>
+<form method="POST">
+    <label>Category:</label><br>
+    {% if categories %}
+        <select name="category_select">
+            <option value="">-- Select existing --</option>
+            {% for cat in categories %}
+                <option value="{{ cat }}">{{ cat }}</option>
+            {% endfor %}
+        </select>
+        <span>or</span><br>
+    {% endif %}
+    <input type="text" name="category" placeholder="New category">
+    <br><br>
+    <label>Date:</label><br>
+    <input type="date" name="date" required><br><br>
+    <label>Amount:</label><br>
+    <input type="number" name="amount" step="0.01" required><br><br>
+    <label>Note:</label><br>
+    <input type="text" name="note" maxlength="100" placeholder="Optional note"><br><br>
+    <button type="submit">Add</button>
+</form>
+{% endblock %}
